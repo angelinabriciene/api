@@ -3,9 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="./reset.css">
+    <script defer src="./main.js"></script>
     <title>Document</title>
 </head>
-<body>
-    
+
+<body background="./bbb.jpg">
+    <div class="container">
+        <div class="row">
+            <div class="col-md"></div>
+        </div>
+        <div class="row">
+            <div style="margin-top: 50px;" class="col-md-6 fs-1 fw-bold">Orų prognozė realiu laiku</div>
+        </div>
+        <div style="margin-top: 30px;" class="row5">
+            <div class="col-md"></div>
+            <div class="col-md-4 text-center">
+                <form action="" method="get">
+                    <div class="form-group">
+                        <input type="text" id="city" class="form-control" placeholder="Įveskite miestą">
+                        <button style="margin-top: 30px;" type="submit" id="submit" class="btn btn-primary">Ieškoti</button>
+                    </div>
+                </form>
+                <div style="margin-top: 30px;" id="forecast-container">
+                    <h2 id="city-name"></h2>
+                    <p id="forecast-time"></p>
+                    <p style="margin-top: 30px;" id="air-temperature"></p>
+                    <p id="feels-like-temperature"></p>
+                    <p id="wind-speed"></p>
+                    <p id="wind-gust"></p>
+                    <p id="wind-direction"></p>
+                    <p id="cloud-cover"></p>
+                    <p id="sea-level-pressure"></p>
+                    <p id="relative-humidity"></p>
+                    <p id="total-precipitation"></p>
+                    <p id="condition-code"></p>
+                </div>
+            </div>
+            <div class="col-md"></div>
+        </div>
+    </div>
 </body>
 </html>

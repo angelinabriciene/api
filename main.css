@@ -1,0 +1,5 @@
+body {
+    background-image: -moz-element();
+    background-size: contain;
+    background-repeat: no-repeat;
+  }
