@@ -16,8 +16,8 @@
             <div class="col-md"></div>
         </div>
         <div class="row">
-            <div style="margin-top: 50px;" class="col-md-6 fs-1 fw-bold">Orai realiu laiku</div>
-            <div style="margin-top: 50px;" class="col-md-6 fs-1 fw-bold">Orų prognozė pagal datą</div>
+            <div style="margin-top: 50px;" class="col-md-4 fs-1 fw-bold">Orai realiu laiku</div>
+            <div style="margin-top: 50px;" class="col-md fs-1 fw-bold">Orų prognozė pagal datą</div>
         </div>
         <div style="margin-top: 30px;" class="row">
             <div class="col-md-3 text-center">
@@ -42,67 +42,20 @@
                     <p id="condition-code"></p>
                 </div>
             </div>
-            <div class="col-md-3"></div>
-            <div class="col-md-6 text-center">
+            <div class="col-md"></div>
+            <div class="col-md-8 text-center">
                 <form action="" method="get">
-                    <div class="form-group">
-
-                        <input type="text" id="cityCustom" class="form-control" placeholder="Įveskite miestą">
-
-                        <input style="margin-top: 20px;" type="date" id="dateCustom" class="form-control" placeholder="Įveskite datą">
-
-                        <button style="margin-top: 30px;" type="submitDate" id="submitCustom" class="btn btn-primary">Ieškoti</button>
+                  <div class="form-group">
+                    <input type="text" id="cityCustom" class="form-control" placeholder="Įveskite miestą">
+                    <input style="margin-top: 20px;" type="date" id="dateCustom" class="form-control" placeholder="Įveskite datą">
+                    <button style="margin-top: 30px;" type="submit" id="submitCustom" class="btn btn-primary">Ieškoti</button>
+                  </div>
                 </form>
+                <h2 style="margin-top: 30px;" id="city-name2"></h2>
                 <div style="margin-top: 30px;" id="forecast-container2">
-                    <h2 id="city-name2"></h2>
-                    <table style="margin-top: 30px;">
-                        <tr>
-                            <th>Parametrai</th>
-                            <th id="forecast-time2"></th>
-                          </tr>
-                        <tr>
-                            <th>Oro temperatūra</th>
-                            <th id="air-temperature2"></th>
-                          </tr>
-                        <tr>
-                            <th>Jutiminė temperatūra</th>
-                            <th id="feels-like-temperature2"></th>
-                          </tr>
-                        <tr>
-                            <th>Vėjo greitis m/s</th>
-                            <th id="wind-speed2"></th>
-                          </tr>
-                        <tr>
-                          <th>Vėjo gūsiai</th>
-                          <th id="wind-gust2"></th>
-                          </tr>
-                        <tr>
-                            <th>Vėjo kryptis</th>
-                            <th id="wind-direction2"></th>
-                          </tr>
-                        <tr>
-                            <th>Debesuotumas %</th>
-                            <th id="cloud-cover2"></th>
-                          </tr>
-                        <tr>
-                            <th>Oro slėgis</th>
-                            <th id="sea-level-pressure2"></th>
-                          </tr>
-                        <tr>
-                            <th>Dregmė %</th>
-                            <th id="relative-humidity2"></th>
-                          </tr>
-                        <tr>
-                            <th>Total Precipitation</th>
-                            <th id="total-precipitation2"></th>
-                          </tr>
-                        <tr>
-                            <th>Prognozė</th>
-                            <th id="condition-code2"></th>
-                          </tr>
-                    </table>
+                  <div id="table-container"></div>
                 </div>
-            </div>
+                <div style="margin-top: 30px;" id="no-data-message"></div>
         </div>
     </div>
 </body>

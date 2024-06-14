@@ -1,7 +1,27 @@
+const cityBackgrounds = {
+    "Kaunas": "20160816_kaunas-castle_16-9.jpg",
+    "Vilnius": "Vilnius_Cathedral_20.jpg",
+    "Elektrėnai": "elikai.jpg"
+  };
+
 document.querySelector("#submit").addEventListener("click", searchCity);
 document.querySelector("#submitCustom").addEventListener("click", searchCityCustom);
+const searchInput = document.querySelector("#city");
+searchInput.addEventListener("input", updateBackground);
 
-// document.getElementById("dateCustom").min = new Date().getFullYear() + "-" +  parseInt(new Date().getMonth() + 1 ) + "-" + new Date().getDate()
+function updateBackground() {
+    const userInput = searchInput.value.trim().toLowerCase();
+    const cityKeys = Object.keys(cityBackgrounds);
+    for (const city of cityKeys) {
+      if (city.toLowerCase() == userInput) {
+        document.body.style.backgroundImage = `url('${cityBackgrounds[city]}')`;
+        return;
+      }
+    }
+    document.body.style.backgroundImage = `url('bbb.jpg')`;
+  }
+
+  updateBackground();
 
 let today = new Date();
 let dd = String(today.getDate()).padStart(2, '0');
@@ -31,7 +51,6 @@ function callApiCustom(cityCustom) {
     .then(data => {printToConsoleCustom(data)})
 }
 
-
 function callApi(city) {
     let url = "https://api.meteo.lt/v1/places/" + city + "/forecasts/long-term";
     fetch(url)
@@ -56,7 +75,6 @@ function printToConsole(data) {
 
     for (let i = 0; i < data.forecastTimestamps.length; i++) {
         const formattedForecastTime = data.forecastTimestamps[i].forecastTimeUtc;
-        
         if (formattedForecastTime == today) {
             cityNameElement.textContent = data.place.name;
             forecastTimeElement.textContent = data.forecastTimestamps[i].forecastTimeUtc;
@@ -76,7 +94,9 @@ function printToConsole(data) {
         }
     }
 }
+
 function printToConsoleCustom(data) {
+    // gauti elementus iš html
     const forecastContainer = document.getElementById("forecast-container2");
     const cityNameElement = document.getElementById("city-name2");
     const forecastTimeElement = document.getElementById("forecast-time2");
@@ -90,41 +110,101 @@ function printToConsoleCustom(data) {
     const relativeHumidityElement = document.getElementById("relative-humidity2");
     const totalPrecipitationElement = document.getElementById("total-precipitation2");
     const conditionCodeElement = document.getElementById("condition-code2");
-
-    for (let i = 0; i < data.forecastTimestamps.length; i++) {
-
-        const formattedForecastTime = data.forecastTimestamps[i].forecastTimeUtc.slice(0, 10);
-        console.log(formattedForecastTime);
-
-        // document.addEventListener('DOMContentLoaded', (event) => {
-        //     const dateInput = document.getElementById('myDate');
-        //     const today = new Date().toISOString().split('T')[0];
-        //     dateInput.setAttribute('min', today);
-        // });
-        
-        let dd = new Date(document.querySelector("#dateCustom").value).getDate().toString().padStart(2, '0');
-        let mm = (new Date(document.querySelector("#dateCustom").value).getMonth() + 1).toString().padStart(2, '0');
-        let yyyy = new Date(document.querySelector("#dateCustom").value).getFullYear();
-
-        d = yyyy + "-" + mm + "-" + dd;
-        console.log(d);
-
-        if (formattedForecastTime == d) {
-            cityNameElement.textContent = data.place.name;
-            forecastTimeElement.textContent = data.forecastTimestamps[i].forecastTimeUtc;
-            airTemperatureElement.textContent = data.forecastTimestamps[i].airTemperature;
-            feelsLikeTemperatureElement.textContent = data.forecastTimestamps[i].feelsLikeTemperature;
-            windSpeedElement.textContent = data.forecastTimestamps[i].windSpeed;
-            windGustElement.textContent = data.forecastTimestamps[i].windGust;
-            windDirectionElement.textContent = data.forecastTimestamps[i].windDirection;
-            cloudCoverElement.textContent = data.forecastTimestamps[i].cloudCover;
-            seaLevelPressureElement.textContent = data.forecastTimestamps[i].seaLevelPressure;
-            relativeHumidityElement.textContent = data.forecastTimestamps[i].relativeHumidity;
-            totalPrecipitationElement.textContent = data.forecastTimestamps[i].totalPrecipitation;
-            conditionCodeElement.textContent = data.forecastTimestamps[i].conditionCode;
-
-            forecastContainer.style.display = "block";
-            break;
-        } 
+  
+    // gauti paduotą datą
+    const dateCustom = document.querySelector("#dateCustom").value;
+    const dateCustomObj = new Date(dateCustom);
+    const dateCustomYear = dateCustomObj.getFullYear();
+    const dateCustomMonth = dateCustomObj.getMonth() + 1;
+    const dateCustomDay = dateCustomObj.getDate();
+  
+    // sukurti lentelę
+    const table = document.createElement("table");
+    table.classList.add("table");
+    const thead = document.createElement("thead");
+    const tbody = document.createElement("tbody");
+  
+    // lentelės headeris
+    const headerRow = document.createElement("tr");
+    const headers = ["Prognozės laikas", "Oro temperatūra", "Jutiminė temperatūra", "Vėjo greitis m/s", "Vėjo gūsiai", "Vėjo kryptis", "Debesuotumas %", "Oro slėgis", "Dregmė %", "Total Precipitation", "Prognozė"];
+    headers.forEach(header => {
+      const th = document.createElement("th");
+      th.textContent = header;
+      headerRow.appendChild(th);
+    });
+    thead.appendChild(headerRow);
+    table.appendChild(thead);
+  
+    // gauti stampus per cikla
+    data.forecastTimestamps.forEach(forecast => {
+      const forecastTime = new Date(forecast.forecastTimeUtc);
+      const forecastYear = forecastTime.getFullYear();
+      const forecastMonth = forecastTime.getMonth() + 1;
+      const forecastDay = forecastTime.getDate();
+  
+      // sulyginti datas pradėti eilę
+      if (forecastYear == dateCustomYear && forecastMonth == dateCustomMonth && forecastDay == dateCustomDay) {
+        cityNameElement.textContent = data.place.name;
+        const row = document.createElement("tr");
+  
+        // sukurti vietas ir padėti gautus duomenis
+        const forecastTimeCell = document.createElement("td");
+        forecastTimeCell.textContent = forecast.forecastTimeUtc;
+        row.appendChild(forecastTimeCell);
+  
+        const airTemperatureCell = document.createElement("td");
+        airTemperatureCell.textContent = forecast.airTemperature;
+        row.appendChild(airTemperatureCell);
+  
+        const feelsLikeTemperatureCell = document.createElement("td");
+        feelsLikeTemperatureCell.textContent = forecast.feelsLikeTemperature;
+        row.appendChild(feelsLikeTemperatureCell);
+  
+        const windSpeedCell = document.createElement("td");
+        windSpeedCell.textContent = forecast.windSpeed;
+        row.appendChild(windSpeedCell);
+  
+        const windGustCell = document.createElement("td");
+        windGustCell.textContent = forecast.windGust;
+        row.appendChild(windGustCell);
+  
+        const windDirectionCell = document.createElement("td");
+        windDirectionCell.textContent = forecast.windDirection;
+        row.appendChild(windDirectionCell);
+  
+        const cloudCoverCell = document.createElement("td");
+        cloudCoverCell.textContent = forecast.cloudCover;
+        row.appendChild(cloudCoverCell);
+  
+        const seaLevelPressureCell = document.createElement("td");
+        seaLevelPressureCell.textContent = forecast.seaLevelPressure;
+        row.appendChild(seaLevelPressureCell);
+  
+        const relativeHumidityCell = document.createElement("td");
+        relativeHumidityCell.textContent = forecast.relativeHumidity;
+        row.appendChild(relativeHumidityCell);
+  
+        const totalPrecipitationCell = document.createElement("td");
+        totalPrecipitationCell.textContent = forecast.totalPrecipitation;
+        row.appendChild(totalPrecipitationCell);
+  
+        const conditionCodeCell = document.createElement("td");
+        conditionCodeCell.textContent = forecast.conditionCode;
+        row.appendChild(conditionCodeCell);
+  
+        tbody.appendChild(row);
+      }
+      if (tbody.childElementCount == 0) {
+        const noDataMessageElement = document.getElementById("no-data-message");
+        noDataMessageElement.textContent = "Duomenų nėra, rinkitės kitą datą. Prognozė pateikiama nuo dabartinio laiko iki savaitės į priekį";
+      } else {
+        const noDataMessageElement = document.getElementById("no-data-message");
+        noDataMessageElement.style.display = "none";
     }
-}
+    });
+
+    table.appendChild(tbody);
+
+    forecastContainer.innerHTML = "";
+    forecastContainer.appendChild(table);
+  }
